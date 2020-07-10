@@ -7,4 +7,5 @@
     <color name="buttonColor">#f06292</color>
     <color name="textColor">#d81b60</color>
     <color name="headerTextColor">#ad1457</color>
+    <color name="checkBoxColor">#f8bbd0</color>
 </resources>

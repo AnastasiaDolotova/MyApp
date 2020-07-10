@@ -1,6 +1,7 @@
 package com.example.myapp
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp.holders.header.DataHeaderHolder
@@ -59,5 +60,4 @@ class Adapter(private var items: List<Any>) :
             else -> (holder as SkillsHolder).onBind(items[position] as DataSkillsHolder)
         }
     }
-
 }

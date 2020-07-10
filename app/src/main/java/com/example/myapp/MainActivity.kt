@@ -1,5 +1,7 @@
 package com.example.myapp
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,26 +13,59 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val adapter = Adapter(
-        listOf(
-            DataInfoHolder(
-                "Anastasia Dolotova",
-                "10 class",
-                "https://github.com/AnastasiaDolotova"
-            ),
-            DataProjectHolder("Project", "Very cool project :)"),
-            DataHeaderHolder("Skills"),
-            DataSkillsHolder("Python", "3 years"),
-            DataSkillsHolder("Java", ">1 year"),
-            DataSkillsHolder("C++", "1 year"),
-            DataSkillsHolder("Kotlin", "<1 year")
-        )
-    )
+    companion object {
+        const val REQUEST_CODE = 666
+    }
+
+    private var list = BooleanArray(4)
+
+    private lateinit var items: ArrayList<Any>
+    private lateinit var adapter: Adapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        createList()
+        adapter = Adapter(items)
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = adapter
+    }
+
+    override fun onResume() {
+        super.onResume()
+        var i = 0
+        for (item in list) {
+            if (item) {
+                items.removeAt(i + 3)
+                i--
+            }
+            i++
+        }
+        adapter = Adapter(items)
+        recycler.adapter = adapter
+        createList()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
+            list = data.getBooleanArrayExtra(FilterActivity.KEY_ITEMS)
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun createList() {
+        items = arrayListOf(
+            DataInfoHolder(
+                "Anastasia Dolotova",
+                "11 grade",
+                "https://github.com/AnastasiaDolotova"
+            ),
+            DataProjectHolder("Project", "Very cool project :)"),
+            DataHeaderHolder("Skills", this, REQUEST_CODE),
+            DataSkillsHolder("Kotlin", "<1 year"),
+            DataSkillsHolder("C++", "1 year"),
+            DataSkillsHolder("Java", "2 year"),
+            DataSkillsHolder("Python", "3 years")
+        )
     }
 }
