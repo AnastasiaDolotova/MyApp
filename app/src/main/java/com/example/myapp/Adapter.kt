@@ -12,8 +12,10 @@ import com.example.myapp.holders.project.DataProjectHolder
 import com.example.myapp.holders.project.ProjectHolder
 import com.example.myapp.holders.skills.DataSkillsHolder
 import com.example.myapp.holders.skills.SkillsHolder
+import kotlinx.android.synthetic.main.header.*
+import kotlinx.android.synthetic.main.header.view.*
 
-class Adapter(private var items: List<Any>) :
+class Adapter(private var items: List<Any>, var flag: Boolean) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemViewType(position: Int): Int = position
@@ -56,7 +58,13 @@ class Adapter(private var items: List<Any>) :
         when (getItemViewType(position)) {
             0 -> (holder as InfoHolder).onBind(items[0] as DataInfoHolder)
             1 -> (holder as ProjectHolder).onBind(items[1] as DataProjectHolder)
-            2 -> (holder as HeaderHolder).onBind(items[2] as DataHeaderHolder)
+            2 -> {
+                (holder as HeaderHolder).onBind(items[2] as DataHeaderHolder)
+                if (!flag)
+                    holder.itemView.imgFilter.setImageResource(R.drawable.filter2)
+                else
+                    holder.itemView.imgFilter.setImageResource(R.drawable.filter)
+            }
             else -> (holder as SkillsHolder).onBind(items[position] as DataSkillsHolder)
         }
     }

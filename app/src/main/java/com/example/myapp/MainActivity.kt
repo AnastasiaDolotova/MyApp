@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private var list = BooleanArray(4)
+    private var flag = true
 
     private lateinit var items: ArrayList<Any>
     private lateinit var adapter: Adapter
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         createList()
-        adapter = Adapter(items)
+        adapter = Adapter(items, flag)
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = adapter
     }
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             }
             i++
         }
-        adapter = Adapter(items)
+        adapter = Adapter(items, flag)
         recycler.adapter = adapter
         createList()
     }
@@ -49,6 +50,7 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
             list = data.getBooleanArrayExtra(FilterActivity.KEY_ITEMS)
+            flag = data.getBooleanExtra(FilterActivity.KEY_FLAG, flag)
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
